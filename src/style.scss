@@ -1,0 +1,135 @@
+.game {
+    max-width: 480px;
+    width: auto;
+    margin: 2rem auto;
+    .board {
+ 
+        .cube {
+            padding: 0.5rem;
+            line-height: 0;
+            height: 3.6rem;
+            border-top: 1px solid #aaa;
+            border-left: 1px solid #aaa;
+            color: #66f;
+            
+            &.highlight {
+                background-color: rgba(241, 241, 241, 0.808);
+            }
+
+            &.tipped {
+                background-color: rgba(255, 246, 119, 0.5);
+            }
+
+            &.selected {
+                background-color: rgb(255, 246, 100);
+            }
+
+            &.invalid {
+                background-color: rgba(255, 148, 144, 0.932);
+            }
+
+            &.bold-left {
+                border-left: 3px solid #aaa;
+            }
+
+            &.bold-top {
+                border-top: 3px solid #aaa;
+            }
+
+            &.bold-right {
+                border-right: 3px solid #aaa;
+            }
+
+            &.bold-bottom {
+                border-bottom: 3px solid #aaa;
+            }
+
+            &.readonly {
+                color: #222222;
+            }
+
+            .value {
+                font-size: 2rem;
+                text-align: center;
+                line-height: 2.5rem;
+            }
+        }
+    }
+
+    .stat {
+        margin: 2rem auto;
+
+        .number {
+
+            padding: 0.75rem;
+            line-height: 0;
+            width: 4rem;
+            height: 4rem;
+            position: relative;
+            margin-bottom: 1rem;
+
+            .value {
+                font-size: 2rem;
+                text-align: center;
+                line-height: 2.5rem;
+
+                &.complete {
+                    color: #aaaaaa;
+                }
+            }
+
+            .amount {
+                position: absolute;
+                top: 0.5rem;
+                right: 0.2rem;
+                color: rgb(255, 255, 255);
+                font-size: 0.8rem;
+            }
+        }
+    }
+
+    .info {
+        margin: 2rem auto;
+
+        .copy {
+            color: #aaa;
+            text-align: right;
+            font-size: 0.6rem;
+        }
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .game {
+        max-width: none;
+        width: auto;
+        margin: 1px 1rem;
+
+        .board {
+
+            .cube {
+                padding: 0.2rem;
+                height: 2.3rem;
+
+                .value {
+                    font-size: 1.6rem;
+                    line-height: 1.8rem;
+                }
+            }
+        }
+
+        .stat {
+            .number {
+                padding: 0.2rem;
+                height: 2.3rem;
+
+                .value {
+                    font-size: 1.6rem;
+                    line-height: 1.8rem;
+                }
+            }
+        }
+    }
+
+    
+}
