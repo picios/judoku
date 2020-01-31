@@ -1,8 +1,12 @@
+require('bootstrap');
+var $ = require("jquery");
+
 import Cube from './cube';
 import Board from './board';
 import Stat from './stat';
 import Info from './info';
 import Generator from './generator';
+import Windialog from './windialog';
 
 
 class App {
@@ -12,13 +16,16 @@ class App {
         this.height = 500;
         this.board = null;
         this.boards = null;
+        this.level = 50;
+        this.postrenders = {};
     }
 
     run() {
         this.logic = new Generator();
         this.reset();
-        this.stat = new Stat(this.board);
+        this.stat = new Stat(this);
         this.info = new Info(this.board);
+        this.win = new Windialog(this);
         this.events();
         this.redraw();
     }
@@ -90,28 +97,43 @@ class App {
             var $this = $(e.currentTarget);
             var cube = scope.board.getCurrentCube();
             cube.changeValue($this.data('value'));
-            console.log(cube);
             scope.clickCube(cube);
         });
     }
 
     redraw() {
-        //console.log('redraw bitch');
         this.validate();
+        
         let render = this.board.render();
         render += this.stat.render();
         render += this.info.render();
+        render += this.win.render();
         this.$box.html(render);
+
+        if (this.isWin()) {
+            this.win.show();
+        }
+
+        //this.stat.confirm.postrender();
+        this.postrender();
         this.boardEvents();
         this.save();
     }
 
-    reset() {
+    postrender() {
+        const scope = this;
+        Object.keys(scope.postrenders).forEach(key => {
+            let callback = scope.postrenders[key];
+            callback.call(this);
+        });
+    }
+
+    reset(state) {
         let saved = localStorage.getItem('boards');
-        console.log(saved);
-        if (saved && saved.indexOf('Object') === -1) {
+        if (saved && saved.indexOf('Object') === -1 && state === undefined) {
             this.boards = JSON.parse(saved);
         } else {
+            this.logic.setLevel(this.level);
             this.boards = this.logic.generate();
         }
         this.board = new Board(this.boards.puzzle);
@@ -128,7 +150,6 @@ class App {
     }
 
     validate() {
-        //console.log(this.boards.sollution);
         let rw = 0;
         for (let row of this.board.getCubes()) {
             let cl = 0;
@@ -147,6 +168,23 @@ class App {
             rw++;
         }
     }
+
+    isWin() {
+        let isWin = true;
+        for (let row of this.board.getCubes()) {
+            for (let cube of row) {
+                if (cube.getValue() === 0 || !cube.getValid()) {
+                    isWin = false;
+                    break;
+                }
+                if (isWin === false) {
+                    break;
+                }
+            }
+        }
+        return isWin;
+    }
+
 }
 
 export default App;

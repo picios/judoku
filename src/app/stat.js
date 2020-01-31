@@ -1,6 +1,34 @@
+import Confirmation from './confirmation';
+var $ = require("jquery");
+
 class Stat {
-    constructor(board) {
-        this.board = board;
+    constructor(app) {
+        const scope = this;
+        this.board = app.board;
+
+        let html = '<select class="form-control select-level">\
+        <option value=50>normal</option>\
+        <option value=29>hard</option>\
+        <option value=65>easy</option>\
+</select>'
+        this.confirm = new Confirmation({
+            $target: $('.btn-confirm'),
+            title: 'New game?',
+            body: 'Select the game level<br />' + html,
+            yes: function() {
+                app.level = $('#' + this.getId() + ' .select-level').val();
+                app.reset(true);
+                app.redraw();
+                location.reload();
+            }
+        });
+        app.postrenders['confirm'] = function() { scope.confirm.postrender(); }
+        app.postrenders['confirm_new'] = function() {
+            $('.btn-confirm').off("click").on("click", function(e) {
+                e.preventDefault();
+                scope.confirm.trigger();
+            });
+        }
     }
 
     render() {
@@ -45,12 +73,16 @@ class Stat {
 
         render.push('</div><!-- numbers -->');
 
-        render.push('<div class="row info">');
-        render.push('Pozostało ' + left);
-        render.push('</div><!-- info -->');
+        render.push('<div class="row second-row">');
+        render.push('<div class="col left">');
+        render.push('To uncover: ' + left);
+        render.push('</div><!-- left -->');
+        render.push('<div class="col reset">');
+        render.push('<a href="#" class="reset-link btn btn-secondary btn-confirm">New game</a>');
+        render.push(this.confirm.render());
+        render.push('</div><!-- reset -->');
+        render.push('</div>');
         render.push('</div><!-- stat -->');
-
-
         return render.join("\n");
     }
 }

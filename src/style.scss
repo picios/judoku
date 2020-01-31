@@ -1,3 +1,5 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+
 .game {
     max-width: 480px;
     width: auto;
@@ -86,17 +88,27 @@
                 font-size: 0.8rem;
             }
         }
+
+        .second-row {
+            .reset {
+                text-align: right;
+            }
+        }
     }
 
     .info {
-        margin: 2rem auto;
-
         .copy {
             color: #aaa;
             text-align: right;
             font-size: 0.6rem;
         }
     }
+
+    .modal-body {
+        text-align: left;
+    }
+
+
 }
 
 @media only screen and (max-width: 600px) {

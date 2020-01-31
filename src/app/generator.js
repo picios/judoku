@@ -7,7 +7,11 @@ class Generator {
     constructor(options) {
         this.base = 3;
         this.side = this.base * this.base;
-        this.level = 50;
+        this.level = 20;
+    }
+
+    setLevel(level) {
+        this.level = level;
     }
 
     pattern(r, c) {
@@ -89,12 +93,14 @@ class Generator {
 
     adjustLevel(board) {
         let rw = 0;
+        let counter = 0;
         for (let row of board) {
             let cl = 0;
             for (let col of row) {
                 let random = Math.floor(Math.random() * 100);
-                if (random > this.level) {
+                if (random > this.level && counter < 63) {
                     board[rw][cl] = 0;
+                    counter++;
                 }
                 cl++;
             }
